@@ -238,11 +238,6 @@ window.addEventListener('DOMContentLoaded', function() {
   hitButton.addEventListener('click', function() {
     // deal to the player
     deal(gameDeck, playerHand);
-    // if the dealer points are less than 17
-    if (calculatePoints(dealerHand) < 17) {
-      // they must take another card
-      deal(gameDeck, dealerHand);
-    }
     // check if anyone busted
     checkBusts();
     render(isGameOver);
@@ -252,11 +247,13 @@ window.addEventListener('DOMContentLoaded', function() {
   const standButton = document.querySelector('#stand-button');
   // add the click event
   standButton.addEventListener('click', function() {
-    const dealerPoints = calculatePoints(dealerHand);
-    // if the dealer points are less than 17
-    if (dealerPoints < 17) {
+    let dealerPoints = calculatePoints(dealerHand);
+    // As long as the dealer has less than 17
+    while (dealerPoints < 17) {
       // they must take another card
       deal(gameDeck, dealerHand);
+      // update dealer points
+      dealerPoints = calculatePoints(dealerHand);
     }
     // check if anyone has won
     checkWinner();
