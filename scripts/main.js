@@ -182,7 +182,10 @@ window.addEventListener('DOMContentLoaded', function() {
     const dealerPoints = calculatePoints(dealerHand);
     
     // check points (higher value)
-    if (dealerPoints > playerPoints) {
+    if (dealerPoints >= 17 && playerPoints >= dealerPoints && playerPoints >= 21) {
+      message('Player Wins')
+      isGameOver = true;
+    } else if (dealerPoints > playerPoints) {
       message('Dealer Wins')
       isGameOver = true;
     } else if (dealerPoints < playerPoints) {
@@ -226,7 +229,7 @@ window.addEventListener('DOMContentLoaded', function() {
       message('Player has 21. Player wins');
       isGameOver = true;
     }
-    render();
+    render(isGameOver);
   })
 
   // find the hit button
@@ -242,13 +245,14 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     // check if anyone busted
     checkBusts();
-    render();
+    render(isGameOver);
   })
 
   // find the stand button
   const standButton = document.querySelector('#stand-button');
   // add the click event
   standButton.addEventListener('click', function() {
+    const dealerPoints = calculatePoints(dealerHand);
     // if the dealer points are less than 17
     if (dealerPoints < 17) {
       // they must take another card
@@ -256,6 +260,6 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     // check if anyone has won
     checkWinner();
-    render();
+    render(isGameOver);
   })
 })
