@@ -1,12 +1,20 @@
 const dealerHand = document.getElementById("dealer-hand");
 const playerHand = document.getElementById("player-hand");
-let deck = [];
+const startGame = document.getElementById("deal-button");
+const hitButton = document.getElementById("hit-button");
+
 const suits = ["hearts", "spades", "clubs", "diamonds"];
 const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-const startGame = document.getElementById("deal-button");
 
+let deck = [];
 let dealerCards = [];
 let playerCards = [];
+
+const playerHit = () => {
+  addPlayerCard();
+  console.log(playerCards);
+  playrunningSum(playerCards);
+};
 
 const makeDeck = (rank, suit) => {
   let pointValue = rank;
@@ -36,7 +44,16 @@ let dealrunningSum = (dealerCards) => {
     const num = card.pointValue;
     sum += num;
   }
-  console.log(sum);
+  console.log("dealer: ", sum);
+};
+
+let playrunningSum = (playerCards) => {
+  sum = 0;
+  for (card of playerCards) {
+    const num = card.pointValue;
+    sum += num;
+  }
+  console.log("player: ", sum);
 };
 
 const addPlayerCard = () => {
@@ -51,7 +68,7 @@ const addDealerCard = () => {
   renderCard(card, dealerHand);
 };
 
-const gameStart = () => {
+const gameRefresh = () => {
   dealerHand.innerHTML = null;
   playerHand.innerHTML = null;
   dealerCards = [];
@@ -62,19 +79,25 @@ const gameStart = () => {
   addDealerCard();
   addPlayerCard();
   addDealerCard();
-  console.log("dealer", dealerCards);
-  console.log("player", playerCards);
-  console.log(deck);
   dealrunningSum(dealerCards);
+  playrunningSum(playerCards);
 };
 
 const renderCard = (card, targetElement) => {
   const img = document.createElement("img");
-  img.dataset.suit = card.suit;
-  img.dataset.rank = card.rank;
+  img.src = "./images/" + card.rank + "_of_" + card.suit + ".png";
   targetElement.append(img);
 };
 
-startGame.onclick = gameStart;
+hitButton.onclick = () => {
+  playerHit();
+  if (sum > 21) {
+    gameRefresh();
+  }
+};
+startGame.onclick = () => {
+  startGame.setAttribute("disabled", "disabled");
+  gameRefresh();
+};
 
 window.addEventListener("DOMContentLoaded", function () {});
