@@ -10,6 +10,34 @@ let deck = [];
 let dealerCards = [];
 let playerCards = [];
 
+const youLost = () => {
+  window.alert("You Lost!");
+};
+
+const youWin = () => {
+  window.alert("You Win!");
+};
+
+const factorAcesp = (playerCards) => {
+  for (card of playerCards) {
+    const ace = card.pointValue;
+    if (ace === 1 && psum < 11) {
+      psum = psum + 10;
+      return psum;
+    }
+  }
+};
+
+const factorAcesd = (dealerCards) => {
+  for (card of dealerCards) {
+    const ace = card.pointValue;
+    if (ace === 1 && dsum < 11) {
+      dsum = dsum + 10;
+      return dsum;
+    }
+  }
+};
+
 const playerHit = () => {
   addPlayerCard();
   console.log(playerCards);
@@ -39,21 +67,22 @@ const getCard = () => {
 };
 
 let dealrunningSum = (dealerCards) => {
-  sum = 0;
+  dsum = 0;
   for (card of dealerCards) {
     const num = card.pointValue;
-    sum += num;
+    dsum += num;
   }
-  console.log("dealer: ", sum);
+  console.log("dealer: ", dsum);
 };
 
 let playrunningSum = (playerCards) => {
-  sum = 0;
+  psum = 0;
   for (card of playerCards) {
     const num = card.pointValue;
-    sum += num;
+    psum += num;
   }
-  console.log("player: ", sum);
+
+  console.log("player: ", psum);
 };
 
 const addPlayerCard = () => {
@@ -66,6 +95,10 @@ const addDealerCard = () => {
   const card = getCard();
   dealerCards.push(card);
   renderCard(card, dealerHand);
+};
+
+const gameStart = () => {
+  startGame.removeAttribute("disabled", "disabled");
 };
 
 const gameRefresh = () => {
@@ -91,13 +124,23 @@ const renderCard = (card, targetElement) => {
 
 hitButton.onclick = () => {
   playerHit();
-  if (sum > 21) {
-    gameRefresh();
-  }
+  setTimeout(() => {
+    if (psum > 21) {
+      youLost();
+      gameStart();
+    }
+    factorAcesp(playerCards);
+    factorAcesd(dealerCards);
+  }, 500);
 };
+
 startGame.onclick = () => {
   startGame.setAttribute("disabled", "disabled");
   gameRefresh();
+  factorAcesp(playerCards);
+  factorAcesd(dealerCards);
+  console.log("players sum", psum);
+  console.log("dealers sum", dsum);
 };
 
 window.addEventListener("DOMContentLoaded", function () {});
