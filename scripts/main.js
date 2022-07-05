@@ -31,6 +31,9 @@ const playerStand = () => {
     if (dsum > 21) {
       youWin();
     }
+    if (psum == dsum && psum == 21) {
+      window.prompt("It's a tie!");
+    }
   }, 500);
 };
 const playerHit = () => {
@@ -58,9 +61,6 @@ const instantCheck = () => {
       dsum += 10;
       dealerPoints.innerText = dsum;
       playerPoints.innerText = psum;
-      setTimeout(() => {
-        youLost();
-      }, 500);
     }
   }
   for (card of playerCards) {
@@ -69,10 +69,24 @@ const instantCheck = () => {
       psum += 10;
       dealerPoints.innerText = dsum;
       playerPoints.innerText = psum;
+    }
+  }
+  while (true) {
+    if (psum === dsum && psum === 21) {
+      window.alert("It's a tie");
+      break;
+    }
+    if (psum === 21 && psum !== dsum) {
       setTimeout(() => {
         youWin();
       }, 500);
+      break;
     }
+    if (dsum === 21 && dsum !== psum)
+      setTimeout(() => {
+        youLost();
+      }, 500);
+    break;
   }
 };
 const factorAcesp = (playerCards) => {
@@ -166,8 +180,6 @@ const gameRefresh = () => {
 
 hitButton.onclick = () => {
   playerHit();
-  console.log("dealers sum", dsum);
-  console.log("players sum", psum);
   setTimeout(() => {
     if (psum > 21) {
       youLost();
@@ -192,8 +204,6 @@ startGame.onclick = () => {
   gameRefresh();
   factorAcesp(playerCards);
   factorAcesd(dealerCards);
-  console.log("players sum", psum);
-  console.log("dealers sum", dsum);
   dealerPoints.innerText = dsum;
   playerPoints.innerText = psum;
 };
