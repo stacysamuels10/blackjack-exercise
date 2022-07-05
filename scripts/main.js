@@ -198,7 +198,7 @@ standButton.onclick = () => {
 };
 
 startGame.onclick = () => {
-  //startGame.setAttribute("disabled", "disabled");
+  startGame.setAttribute("disabled", "disabled");
   hitButton.removeAttribute("disabled", "disabled");
   standButton.removeAttribute("disabled", "disabled");
   gameRefresh();
