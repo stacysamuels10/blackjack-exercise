@@ -25,7 +25,7 @@ const playerStand = () => {
     if (psum > dsum) {
       youWin();
     }
-    if (dsum > psum && dsum < 21) {
+    if (dsum > psum && dsum <= 21) {
       youLost();
     }
     if (dsum > 21) {
